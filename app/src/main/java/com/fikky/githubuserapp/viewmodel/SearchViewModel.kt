@@ -24,14 +24,14 @@ class SearchViewModel : ViewModel() {
             ) {
                 val list = response.body()?.items
                 if (list.isNullOrEmpty()) {
-                    listUser.postValue(Resource.Error(message = null))
+                    listUser.postValue(Resource.Error(null))
                 } else {
                     listUser.postValue(Resource.Success(data = list))
                 }
             }
 
             override fun onFailure(call: Call<SearchResponse>, t: Throwable) {
-                listUser.postValue(Resource.Error(message = t.message))
+                listUser.postValue(Resource.Error(t.message))
             }
         })
         return listUser

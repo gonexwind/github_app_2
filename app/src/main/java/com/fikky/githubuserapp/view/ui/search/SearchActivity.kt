@@ -54,8 +54,8 @@ class SearchActivity : AppCompatActivity(), StateCallback<List<User>> {
         }
     }
 
-    override fun onSuccess(users: List<User>) {
-        userAdapter.setAllUser(users)
+    override fun onSuccess(data: List<User>) {
+        userAdapter.setAllUser(data)
         binding.includeMainSearch.apply {
             listUserRecyclerView.visibility = visible
             messageTextView.visibility = gone
