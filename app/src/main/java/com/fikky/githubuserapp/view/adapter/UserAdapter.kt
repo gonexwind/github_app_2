@@ -5,9 +5,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions.circleCropTransform
 import com.fikky.githubuserapp.databinding.ListUserItemBinding
 import com.fikky.githubuserapp.service.model.User
+import com.fikky.githubuserapp.service.util.Constant.EXTRA_USER
+import com.fikky.githubuserapp.view.ui.detail.DetailActivity
 
 class UserAdapter : RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
     private val listUser = ArrayList<User>()
@@ -20,7 +21,9 @@ class UserAdapter : RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
                 Glide.with(itemView.context).load(user.avatar).into(avatarImageView)
             }
             itemView.setOnClickListener {
-                val intent = Intent(itemView.context, )
+                val intent = Intent(itemView.context, DetailActivity::class.java)
+                intent.putExtra(EXTRA_USER, user.username)
+                itemView.context.startActivity(intent)
             }
         }
     }
@@ -31,7 +34,7 @@ class UserAdapter : RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
-        TODO("Not yet implemented")
+        holder.bind(listUser[position])
     }
 
     override fun getItemCount(): Int = listUser.size

@@ -3,7 +3,7 @@ package com.fikky.githubuserapp.service.util
 import android.view.View
 
 interface StateCallback<T> {
-    fun onSuccess(data: T)
+    fun onSuccess(users: T)
 
     fun onLoading()
 
