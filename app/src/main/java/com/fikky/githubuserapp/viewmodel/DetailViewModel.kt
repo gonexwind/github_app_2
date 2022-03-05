@@ -13,6 +13,8 @@ import retrofit2.Response
 class DetailViewModel : ViewModel() {
     private val retrofit = RetrofitService.create()
     private val user = MutableLiveData<Resource<User>>()
+    private val listUserFollowers = MutableLiveData<Resource<List<User>>>()
+    private val listUserFollowing = MutableLiveData<Resource<List<User>>>()
 
     fun getDetailUser(username: String): LiveData<Resource<User>> {
         retrofit.getDetailUser(username).enqueue(object : Callback<User> {
@@ -27,4 +29,43 @@ class DetailViewModel : ViewModel() {
         })
         return user
     }
+
+    fun getUserFollowers(username: String): LiveData<Resource<List<User>>> {
+        listUserFollowers.postValue(Resource.Loading())
+        retrofit.getUserFollowers(username).enqueue(object : Callback<List<User>> {
+            override fun onResponse(call: Call<List<User>>, response: Response<List<User>>) {
+                val list = response.body()
+                if (list.isNullOrEmpty()) {
+                    listUserFollowers.postValue(Resource.Error(null))
+                } else {
+                    listUserFollowers.postValue(Resource.Success(list))
+                }
+            }
+
+            override fun onFailure(call: Call<List<User>>, t: Throwable) {
+                listUserFollowers.postValue(Resource.Error(t.message))
+            }
+        })
+        return listUserFollowers
+    }
+
+    fun getUserFollowing(username: String): LiveData<Resource<List<User>>> {
+        listUserFollowing.postValue(Resource.Loading())
+        retrofit.getUserFollowing(username).enqueue(object : Callback<List<User>> {
+            override fun onResponse(call: Call<List<User>>, response: Response<List<User>>) {
+                val list = response.body()
+                if (list.isNullOrEmpty()) {
+                    listUserFollowing.postValue(Resource.Error(null))
+                } else {
+                    listUserFollowing.postValue(Resource.Success(list))
+                }
+            }
+
+            override fun onFailure(call: Call<List<User>>, t: Throwable) {
+                listUserFollowing.postValue(Resource.Error(t.message))
+            }
+        })
+        return listUserFollowing
+    }
+
 }
