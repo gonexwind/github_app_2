@@ -8,7 +8,7 @@
     <string name="repository">Repository</string>
     <string name="followers">Followers</string>
     <string name="following">Following</string>
-    <string name="search_message">Searching User</string>
+    <string name="search_message">Please search user...</string>
     <string name="search_hint">Type Username...</string>
     <string name="user_not_found">User Not Found</string>
     <string name="followers_not_found">%s Has No Followers</string>

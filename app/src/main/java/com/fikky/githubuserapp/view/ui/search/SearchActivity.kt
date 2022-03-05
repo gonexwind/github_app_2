@@ -1,6 +1,9 @@
 package com.fikky.githubuserapp.view.ui.search
 
+import android.app.SearchManager
+import android.content.Context
 import android.os.Bundle
+import android.view.Menu
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
@@ -15,7 +18,6 @@ import com.fikky.githubuserapp.viewmodel.SearchViewModel
 
 class SearchActivity : AppCompatActivity(), StateCallback<List<User>> {
     private lateinit var binding: ActivitySearchBinding
-    private lateinit var searchQuery: String
     private lateinit var userAdapter: UserAdapter
     private val viewModel by viewModels<SearchViewModel>()
 
@@ -25,33 +27,38 @@ class SearchActivity : AppCompatActivity(), StateCallback<List<User>> {
         setContentView(binding.root)
 
         userAdapter = UserAdapter()
-        with(binding) {
-            includeMainSearch.listUserRecyclerView.apply {
-                adapter = userAdapter
-                layoutManager =
-                    LinearLayoutManager(this@SearchActivity, LinearLayoutManager.VERTICAL, false)
-            }
-
-            searchView.apply {
-                queryHint = resources.getString(R.string.search_hint)
-                setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-                    override fun onQueryTextSubmit(query: String?): Boolean {
-                        searchQuery = query.toString()
-                        clearFocus()
-                        viewModel.searchUser(searchQuery).observe(this@SearchActivity) { a ->
-                            when (a) {
-                                is Resource.Loading -> onLoading()
-                                is Resource.Success -> a.data?.let { b -> onSuccess(b) }
-                                else -> onFailed(a.message)
-                            }
-                        }
-                        return true
-                    }
-
-                    override fun onQueryTextChange(newText: String?): Boolean = false
-                })
-            }
+        binding.includeMainSearch.listUserRecyclerView.apply {
+            adapter = userAdapter
+            layoutManager =
+                LinearLayoutManager(this@SearchActivity, LinearLayoutManager.VERTICAL, false)
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.option_menu, menu)
+
+        val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        val searchView = menu.findItem(R.id.searchAppBar).actionView as SearchView
+
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
+        searchView.queryHint = resources.getString(R.string.search_hint)
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                viewModel.searchUser(query).observe(this@SearchActivity) { a ->
+                    when (a) {
+                        is Resource.Loading -> onLoading()
+                        is Resource.Success -> a.data?.let { b -> onSuccess(b) }
+                        else -> onFailed(a.message)
+                    }
+                }
+                searchView.clearFocus()
+                return true
+            }
+
+            override fun onQueryTextChange(query: String): Boolean = false
+        })
+        return true
     }
 
     override fun onSuccess(data: List<User>) {

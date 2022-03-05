@@ -15,7 +15,7 @@
         tools:src="@drawable/ic_launcher_background" />
 
     <TextView
-        android:id="@+id/nameTextView"
+        android:id="@+id/usernameTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_toEndOf="@id/avatarImageView"
@@ -23,16 +23,5 @@
         android:paddingTop="16dp"
         android:textAppearance="?attr/textAppearanceSubtitle1"
         tools:text="Fikky Ardianto" />
-
-    <TextView
-        android:id="@+id/usernameTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/nameTextView"
-        android:layout_gravity="center_vertical"
-        android:layout_toEndOf="@id/avatarImageView"
-        android:maxLines="2"
-        android:textAppearance="?attr/textAppearanceBody2"
-        tools:text="gonexwind" />
 
 </RelativeLayout>

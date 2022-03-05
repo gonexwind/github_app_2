@@ -6,19 +6,6 @@
     android:orientation="vertical"
     tools:context=".view.ui.search.SearchActivity">
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:elevation="8dp">
-
-        <androidx.appcompat.widget.SearchView
-            android:id="@+id/searchView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp" />
-
-    </androidx.cardview.widget.CardView>
-
     <include
         android:id="@+id/include_main_search"
         layout="@layout/main_search"
